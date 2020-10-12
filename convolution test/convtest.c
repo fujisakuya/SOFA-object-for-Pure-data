@@ -15,6 +15,9 @@ int main(int argc, const char * argv[]) {
     fftw_complex *in_ir_fftw , *out_ir_fftw;
     fftw_complex *in_final, *out_final;
     fftw_plan plan1, plan2, plan3;
+    double realD,imagD,realS,imagS;
+    double mux = 1.0/fftsize;
+
 
     int i,s1,s2,s3;
 
@@ -93,11 +96,6 @@ int main(int argc, const char * argv[]) {
 
 
 
-    for(i = 0; i<fftsize; i++){
-      fprintf(filename1," bin:%d , re.in:%f,   im.in:%f,  re.out:%f  im.out:%f  \n",i,in_signal_fftw[i][0],in_signal_fftw[i][1],out_signal_fftw [i][0],out_signal_fftw [i][1]);
-      }
-
-
 
 
 
@@ -111,27 +109,37 @@ int main(int argc, const char * argv[]) {
 */
 
 
-      for(i=0; i<fftsize; i++){
-        out_final[i][0] =  out_signal_fftw[i][0] * out_ir_fftw[i][0];
-        out_final[i][1] =  out_signal_fftw[i][1] * out_ir_fftw[i][1];
+
+      for( i = 0; i < fftsize; i++ )  {
+        realD = out_signal_fftw[i][0]; //freq_dataがin_dataのoutで、実数部分を入れます。
+        imagD = out_signal_fftw[i][1]; //freq_dataがin_dataのoutで、虚数部分を入れます。
+        realS = out_ir_fftw[i][0]; //freq_sequenceがin_sequenceのoutで、実数部分を入れます。
+        imagS = out_ir_fftw[i][1]; //freq_sequenceがin_sequenceのoutで、実数部分を入れます。
+        out_final[i][0] = (realD * realS - imagD * imagS)*mux;
+        out_final[i][1] = (realD * imagS + imagD * realS)*mux;
       }
 
 
 
+      for(i = 0; i<fftsize; i++){
+          fprintf(filename2," bin:%d , re.out:%f,   im.out:%f,  re.in:%f  im.in:%f  \n",i,out_final[i][0],out_final[i][1],in_final[i][0],in_final[i][1]);
+    }
 
-      /* get amplitude */
+
+/*
+
       for(i=0;i<fftsize;i++){
-        re = out_final[i][0];         // real complex number 
-        im = out_final[i][1];         // Imaginary complex number
+        re = in_final[i][0];         // real complex number
+        im = in_final[i][1];         // Imaginary complex number
         amplitude[i] = sqrt(re*re + im*im);
       }
+  */
+
 
       /*writing file to plot */
       for(i = 0; i<fftsize; i++){
         fprintf(plotfile1,"%d, %lf\n",i,amplitude[i]);
       }
-
-
 
       /*Inverse fft*/
     fftw_execute(plan3);
@@ -140,8 +148,9 @@ int main(int argc, const char * argv[]) {
 
    /*writing file to inverse fft*/
      for(i = 0; i<fftsize; i++){
-         fprintf(filename2," bin:%d , re.out:%f,   im.out:%f,  re.in:%f  im.in:%f  \n",i,out_final[i][0],out_final[i][1],in_final[i][0],in_final[i][1]);
+         fprintf(filename3," bin:%d , re.out:%f,   im.out:%f,  re.in:%f  im.in:%f  \n",i,out_final[i][0],out_final[i][1],in_final[i][0],in_final[i][1]);
    }
+
 
 
    for(i = 0; i<fftsize; i++){
