@@ -98,7 +98,6 @@ int main(int argc, const char * argv[]) {
       }
 
 
-  
 
 
 
@@ -106,7 +105,6 @@ int main(int argc, const char * argv[]) {
 /*
     plan1 = fftw_plan_dft_1d(fftsize, out_signal_fftw, in_signal_fftw, FFTW_BACKWARD, FFTW_ESTIMATE);
      fftw_execute(plan1);
-    逆フーリエ変換後の書き込み
        for(i = 0; i<fftsize; i++){
            fprintf(filename5," bin:%d , re.out:%f,   im.out:%f,  re.in:%f  im.in:%f  \n",i,out_signal_fftw[i][0],out_signal_fftw[i][1],in_signal_fftw[i][0],in_signal_fftw[i][1]);
      }
@@ -128,19 +126,19 @@ int main(int argc, const char * argv[]) {
         amplitude[i] = sqrt(re*re + im*im);
       }
 
-
-
-      /*plot用のファイルの書き込み*/
+      /*writing file to plot */
       for(i = 0; i<fftsize; i++){
         fprintf(plotfile1,"%d, %lf\n",i,amplitude[i]);
       }
 
 
 
-      /*逆フーリエ変換を行う*/
+      /*Inverse fft*/
     fftw_execute(plan3);
 
-   /*逆フーリエ変換後の書き込み*/
+
+
+   /*writing file to inverse fft*/
      for(i = 0; i<fftsize; i++){
          fprintf(filename2," bin:%d , re.out:%f,   im.out:%f,  re.in:%f  im.in:%f  \n",i,out_final[i][0],out_final[i][1],in_final[i][0],in_final[i][1]);
    }
