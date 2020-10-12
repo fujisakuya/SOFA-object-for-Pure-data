@@ -121,8 +121,8 @@ int main(int argc, const char * argv[]) {
 
       /* get amplitude */
       for(i=0;i<fftsize;i++){
-        re = out_final[i][0];         // 複素数の実数部
-        im = out_final[i][1];         // 複素数の虚数部
+        re = out_final[i][0];         // real complex number 
+        im = out_final[i][1];         // Imaginary complex number
         amplitude[i] = sqrt(re*re + im*im);
       }
 
