@@ -25,10 +25,10 @@ typedef struct _mysofa_tilde{
     t_float x,y,z;
     t_float leftDelay;
     t_float rightDelay;
-    
-    
 
-    
+
+
+
     t_inlet *x_in2;
     t_inlet *x_in3;
     t_inlet *x_in4;
@@ -60,26 +60,26 @@ t_int *mysofa_tilde_perform(t_int *w)
     int filter_length;
     x->leftDelay = 0;
     x->rightDelay = 0;
-    
+
 
 
 
     hrtf = mysofa_open("RIEC_hrir_subject_001.sofa", 48000, &filter_length, &err); //filter_lengthを定義された後じゃないとleftIRは定義できない
-    
+
     x->values[0] = x->azimuth;
     x->values[1] = x->elevation;
     x->values[2] = x->distance;
-    
+
     mysofa_s2c(x->values);
-    
+
     x->x = x->values[0];
     x->y = x->values[1];
     x->z = x->values[2];
 
 
-    
 
-  //  mysofa_getfilter_float_nointerp(hrtf, x->x, x->y, x->z,x->leftIR,x->rightIR,&x->leftDelay,&x->rightDelay);
+
+  //  mysofa_getfilter_float(hrtf, x->x, x->y, x->z,x->leftIR,x->rightIR,&x->leftDelay,&x->rightDelay);
 
 //    for(i=0;i<n;i++){
 //        out1[i] = x->leftIR[i];
@@ -128,7 +128,7 @@ void *mysofa_tilde_new(t_floatarg f)
     x->x_in2 = floatinlet_new(&x->x_obj, &x->azimuth);
     x->x_in3 = floatinlet_new(&x->x_obj, &x->elevation);
     x->x_in4 = floatinlet_new(&x->x_obj, &x->distance);
- 
+
 
     x->x_out1 = outlet_new(&x->x_obj, &s_signal);
     x->x_out2 = outlet_new(&x->x_obj, &s_signal);
@@ -154,7 +154,7 @@ void mysofa_tilde_setup(void){
                     (t_method)mysofa_tilde_dsp,
                     gensym("dsp"),A_CANT,0);
     CLASS_MAINSIGNALIN(mysofa_tilde_class, t_mysofa_tilde, f);
-    
+
     post("singen~ (c) 2020 hoge hoge");
 
 }
