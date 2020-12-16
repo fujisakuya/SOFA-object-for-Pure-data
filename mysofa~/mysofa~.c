@@ -17,6 +17,7 @@ typedef struct _mysofa_tilde{
     t_float rightIR[MAX_BLOCKSIZE];
     t_float leftIR[MAX_BLOCKSIZE];
     t_int filter_length;
+    t_int err;
     t_float f;
     t_float azimuth;
     t_float elevation;
@@ -34,8 +35,7 @@ typedef struct _mysofa_tilde{
     t_inlet *x_in4;
     t_outlet *x_out1;
     t_outlet *x_out2;
-
-
+    struct MYSOFA_EASY *hrtf;
 }t_mysofa_tilde;
 
 
@@ -54,17 +54,13 @@ t_int *mysofa_tilde_perform(t_int *w)
     t_sample  *out2 =    (t_sample *)(w[4]);
     int       n =           (int)(w[5]);
 
-    struct MYSOFA_EASY *hrtf = NULL;
-    int err;
+    
     int i;
-    int filter_length;
     x->leftDelay = 0;
     x->rightDelay = 0;
 
 
 
-
-    hrtf = mysofa_open("RIEC_hrir_subject_001.sofa", 48000, &filter_length, &err); //filter_lengthを定義された後じゃないとleftIRは定義できない
 
     x->values[0] = x->azimuth;
     x->values[1] = x->elevation;
@@ -76,17 +72,15 @@ t_int *mysofa_tilde_perform(t_int *w)
     x->y = x->values[1];
     x->z = x->values[2];
 
+s
 
+    mysofa_getfilter_float(x->hrtf, x->x, x->y, x->z,x->leftIR,x->rightIR,&x->leftDelay,&x->rightDelay);
 
+   for(i=0;i<n;i++){
+        out1[i] = x->leftIR[i];
+        out2[i] = x->rightIR[i];
+    }
 
-  //  mysofa_getfilter_float(hrtf, x->x, x->y, x->z,x->leftIR,x->rightIR,&x->leftDelay,&x->rightDelay);
-
-//    for(i=0;i<n;i++){
-//        out1[i] = x->leftIR[i];
-//        out2[i] = x->rightIR[i];
-//    }
-
-    mysofa_close(hrtf);
 
     return (w+6);
 
@@ -96,6 +90,7 @@ t_int *mysofa_tilde_perform(t_int *w)
 
 void mysofa_tilde_dsp(t_mysofa_tilde *x, t_signal **sp)
 {
+    
     dsp_add(mysofa_tilde_perform,
             5,
             x,
@@ -103,6 +98,11 @@ void mysofa_tilde_dsp(t_mysofa_tilde *x, t_signal **sp)
             sp[1]->s_vec, //out_signal_r
             sp[2]->s_vec, //out_signal_l
             sp[0]->s_n);
+    
+    
+    x->hrtf = (struct MYSOFA_EASY*)malloc(sizeof(struct MYSOFA_EASY));
+    x->hrtf = mysofa_open("RIEC_hrir_subject_001.sofa", 48000, &x->filter_length, &x->err);
+    
 
 }
 
@@ -116,6 +116,8 @@ void mysofa_tilde_free(t_mysofa_tilde *x)
     inlet_free(x->x_in4);
     outlet_free(x->x_out1);
     outlet_free(x->x_out2);
+    mysofa_close(x->hrtf);
+
 }
 
 

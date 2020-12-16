@@ -1,0 +1,10 @@
+PDLIBBUILDER_DIR=/Users/fujisawasakuwataru/Downloads/研究/libmysofa-master
+# Makefile for mysofa~
+
+lib.name = mysofa~
+
+class.sources = mysofa~.c
+
+datafiles = mysofa~-help.pd myclass2-help.pd README.txt LICENSE.txt
+
+include $(PDLIBBUILDER_DIR)/Makefile.pdlibbuilder
