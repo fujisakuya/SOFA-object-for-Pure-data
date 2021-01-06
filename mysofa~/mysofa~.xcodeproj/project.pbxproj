@@ -12,7 +12,7 @@
 		053F3B47257D214500EC349D /* fftw3.h in Headers */ = {isa = PBXBuildFile; fileRef = 053F3B46257D214500EC349D /* fftw3.h */; };
 		053F3B49257D229300EC349D /* mysofa.h in Headers */ = {isa = PBXBuildFile; fileRef = 053F3B48257D229300EC349D /* mysofa.h */; };
 		053F3B4C257D22DC00EC349D /* libmysofa.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 053F3B4B257D22DC00EC349D /* libmysofa.a */; };
-		053F3B4E257D231100EC349D /* libfftw3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 053F3B4D257D231100EC349D /* libfftw3.a */; };
+		053F3B6125948E6B00EC349D /* libfftw3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 053F3B4D257D231100EC349D /* libfftw3.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,6 +23,7 @@
 		053F3B48257D229300EC349D /* mysofa.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mysofa.h; sourceTree = "<group>"; };
 		053F3B4B257D22DC00EC349D /* libmysofa.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmysofa.a; path = ../sofa_test/libmysofa.a; sourceTree = "<group>"; };
 		053F3B4D257D231100EC349D /* libfftw3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfftw3.a; path = "../fftw-3.3.8/libfftw3.a"; sourceTree = "<group>"; };
+		053F3B5F25948E2500EC349D /* libfftw3f.la */ = {isa = PBXFileReference; lastKnownFileType = text; name = libfftw3f.la; path = "../fftw-3.3.8/libfftw3f.la"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -30,8 +31,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				053F3B6125948E6B00EC349D /* libfftw3.a in Frameworks */,
 				053F3B4C257D22DC00EC349D /* libmysofa.a in Frameworks */,
-				053F3B4E257D231100EC349D /* libfftw3.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -61,6 +62,7 @@
 		053F3B4A257D22DC00EC349D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				053F3B5F25948E2500EC349D /* libfftw3f.la */,
 				053F3B4D257D231100EC349D /* libfftw3.a */,
 				053F3B4B257D22DC00EC349D /* libmysofa.a */,
 			);
