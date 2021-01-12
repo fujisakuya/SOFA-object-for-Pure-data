@@ -37,8 +37,6 @@
 is the sampling rate in Hz must be in the same directory as the patch
 using this object;
 #X text 758 189 signal;
-#X floatatom 42 593 5 0 0 1 Speaker_Azimuth - -;
-#X floatatom 61 614 5 0 0 1 Speaker_Distance - -;
 #X obj 152 465 dac~;
 #X text 826 169 - the convolved signal for the left loudspeaker;
 #X text 827 188 - the convolved signal for the right loudspeaker;
@@ -80,21 +78,21 @@ three inlets).;
 cm);
 #X text 824 102 - a float to the 4rd inlet sets the elevation (-40..90
 degrees), f 64;
-#X obj 38 566 print~;
-#X obj 39 534 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+#X obj 41 460 print~;
+#X obj 42 428 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
 #X connect 1 0 4 0;
 #X connect 2 0 5 0;
 #X connect 3 0 6 0;
-#X connect 4 0 32 2;
-#X connect 5 0 32 3;
-#X connect 6 0 32 4;
-#X connect 32 0 24 0;
-#X connect 32 1 24 1;
-#X connect 33 0 34 0;
-#X connect 34 0 32 1;
-#X connect 35 0 32 0;
-#X connect 36 0 38 0;
-#X connect 37 0 36 0;
-#X connect 38 0 39 0;
-#X connect 53 0 52 0;
+#X connect 4 0 30 2;
+#X connect 5 0 30 3;
+#X connect 6 0 30 4;
+#X connect 30 0 22 0;
+#X connect 30 1 22 1;
+#X connect 31 0 32 0;
+#X connect 32 0 30 1;
+#X connect 33 0 30 0;
+#X connect 34 0 36 0;
+#X connect 35 0 34 0;
+#X connect 36 0 37 0;
+#X connect 51 0 50 0;
