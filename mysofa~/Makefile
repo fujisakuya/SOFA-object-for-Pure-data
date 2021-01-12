@@ -2,7 +2,7 @@
 
 cflags =  -I/usr/local/include/ -mmacosx-version-min=10.15
 
-ldflags = -L/usr/local/lib/ -lmysofa 
+ldflags = -L/usr/local/lib/ -lmysofa -lfftw3f -lm
 
 lib.name = mysofa~
 
