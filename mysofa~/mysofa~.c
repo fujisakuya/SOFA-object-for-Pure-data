@@ -138,8 +138,6 @@ t_int *mysofa_tilde_perform(t_int *w) {
     int       n =           (int)(w[5]);
     
     float blocksize = n;
-    int blockScale  = MAX_BLOCKSIZE / blocksize;
-    unsigned scaledBlocksize;
     int i = 0;
     float realD,imagD,realS,imagS;
     float mux = 1.0/blocksize;
@@ -512,7 +510,7 @@ void mysofa_tilde_free(t_mysofa_tilde *x) {
 
 
 
-void *mysofa_tilde_new(t_symbol *filenameArg) {
+void *mysofa_tilde_new(void) {
     t_mysofa_tilde *x = (t_mysofa_tilde *)pd_new(mysofa_tilde_class);
     //  This is called every time an object is created.
     x->x_in2 = symbolinlet_new(&x->x_obj, &x->filenameArg);
@@ -540,7 +538,7 @@ void mysofa_tilde_setup(void) {
                                  (t_method)mysofa_tilde_free,
                                  sizeof(t_mysofa_tilde),
                                  CLASS_DEFAULT,
-                                 A_DEFFLOAT,0);
+                                 0);
     
     class_addmethod(mysofa_tilde_class,
                     (t_method)mysofa_tilde_dsp,
