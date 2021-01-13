@@ -10,7 +10,7 @@
 
 static t_class *mysofa_tilde_class;
 
-#define MAX_BLOCKSIZE 8192
+#define MAX_BLOCKSIZE 16384
 #define MAX_N_POINTS 3000
 
 
@@ -148,8 +148,6 @@ t_int *mysofa_tilde_perform(t_int *w) {
 
 
     
-    
-    
     x->values[0] = x->azimuth;//x->azimuth;
     x->values[1] = x->elevation;//x->elevation;
     x->values[2] = x->distance;//x->distance;
@@ -163,30 +161,32 @@ t_int *mysofa_tilde_perform(t_int *w) {
     post("%f\n",x->values[2]);
      */
     
+
     x->x = x->values[0];
     x->y = x->values[1];
     x->z = x->values[2];
     
      mysofa_getfilter_float(x->sofa,x->x,x->y,x->z,x->leftIR,x->rightIR,&x->leftDelay,&x->rightDelay);
-    
-    
-
-    
      
      //signal
-     for( i = 0; i<n ; i++){
+     for(i = 0; i<n ; i++){
      x->in_signal_fftwf[i][0] = in[i];
      x->in_signal_fftwf[i][1] = 0.0;
      }
+    
+    
+    
      
-     
-     for( i = n; i<x->fftsize ; i++){
+     for(i = n; i<x->fftsize ; i++){
      x->in_signal_fftwf[i][0] = 0.0;
      x->in_signal_fftwf[i][1] = 0.0;
      }
     
+    //1が左
+    //2が右
     
     
+     
     //leftIR
     for(i =0;i<x->filter_length;i++){
         x->in_left_ir_fftwf[i][0] = x->leftIR[i];
@@ -212,49 +212,13 @@ t_int *mysofa_tilde_perform(t_int *w) {
     
     
     
-    
-    
-    
-    
-    /*
-     //left IR
-     for(i =0;i<x->filter_length;i++){
-     scaledBlocksize = (x->filter_length-i)*blockScale;
-     x->in_left_ir_fftwf[i][0] = x->leftIR[i] * x->crossCoef[scaledBlocksize] + x->previousImpulse[i] * x->crossCoef[MAX_BLOCKSIZE - scaledBlocksize];
-     x->in_left_ir_fftwf[i][1] = 0.0;
-     x->previousImpulse[i] = x->in_left_ir_fftwf[i][0];
-     }
-     
-     for(i =x->filter_length; i<x->fftsize; i++){
-     x->in_left_ir_fftwf[i][0] = 0.0;
-     x->in_left_ir_fftwf[i][1] = 0.0;
-     }
-     
-     
-     //right IR
-     for(i =0;i<x->filter_length;i++){
-     scaledBlocksize = (x->filter_length-i)*blockScale;
-     x->in_right_ir_fftwf[i][0] = x->leftIR[i] * x->crossCoef[scaledBlocksize] + x->previousImpulse[i] * x->crossCoef[MAX_BLOCKSIZE - scaledBlocksize];
-     x->in_right_ir_fftwf[i][1] = 0.0;
-     x->previousImpulse[i] = x->in_right_ir_fftwf[i][0];
-     }
-     
-     for(i=x->filter_length; i<x->fftsize; i++){
-     x->in_left_ir_fftwf[i][0] = 0.0;
-     x->in_left_ir_fftwf[i][1] = 0.0;
-     }
-     */
 
     
-
-     
      fftwf_execute(x->plan1);
      fftwf_execute(x->plan2);
      fftwf_execute(x->plan3);
     
 
-    
-    
     
      for( i = 0; i < x->convsize; i++ ){
      realD = x->out_signal_fftwf[i][0];
@@ -266,7 +230,6 @@ t_int *mysofa_tilde_perform(t_int *w) {
      }
      
      
-     
      for( i = 0; i < x->convsize; i++ ){
      realD = x->out_signal_fftwf[i][0];
      imagD = x->out_signal_fftwf[i][1];
@@ -275,33 +238,30 @@ t_int *mysofa_tilde_perform(t_int *w) {
      x->out_right_final[i][0] = (realD * realS - imagD * imagS)*mux;
      x->out_right_final[i][1] = (realD * imagS + imagD * realS)*mux;
      }
-    
+     
 
     
-  /*
-    for(i=0;i<n;i++){
-        post("right %f\n",x->out_right_final[i][0]);
+    /*
+    for( i = 0; i < x->convsize; i++ ){
+        x->out_left_final[i][0] = (x->out_signal_fftwf[i][0] * x->out_left_ir_fftwf[i][0])*mux;
+        x->out_left_final[i][1] = (x->out_signal_fftwf[i][1] * x->out_left_ir_fftwf[i][1])*mux;
     }
     
-    for(i=0;i<n;i++){
-        post("left %f\n", x->out_left_final[i][0] );
+    
+    for( i = 0; i < x->convsize; i++ ){
+        x->out_right_final[i][0] = (x->out_signal_fftwf[i][0] * x->out_right_ir_fftwf[i][0])*mux;
+        x->out_right_final[i][1] = (x->out_signal_fftwf[i][1] * x->out_right_ir_fftwf[i][1])*mux;
     }
-
      */
+    
+    
+    
+    
+    
+  
     
      fftwf_execute(x->plan4);
      fftwf_execute(x->plan5);
-    
-    
-    /*
-    for(i=0; i<n; i++){
-        post("x->in_right_final[i][0] : %lf\n",x->in_right_final[i][0]);
-    }
-    
-    for(i=0; i<n; i++){
-        post("x->in_right_final[i][1] : %lf\n",x->in_right_final[i][1]);
-    }
-     */
     
     
     
@@ -310,82 +270,46 @@ t_int *mysofa_tilde_perform(t_int *w) {
          x->in_left_final[i][0] = 0.0;
          x->in_right_final[i][0] = 0.0;
      }
-
     
     
+    
+    for(i=x->filter_length; i<x->convsize; i++){
+            x->buffer_left[i] = 0.0;
+            x->buffer_right[i] = 0.0;
+    }
     
 
     /*
-     if(x->flag == 0){
-     
-         for(i=0;i<n;i++){
-             out1[i] = x->in_right_final[i][0];
-             out2[i] = x->in_left_final[i][0];
-         }
-         
-         int j = 0;
-         for(i=n; i<x->convsize; i++){
-             x->buffer_right[j] = x->in_right_final[i][0];
-             x->buffer_left[j] = x->in_left_final[i][0];
-             j++;
-         }
-     
-         for(i=0; i<n; i++){
-             post("out1[i] : %lf\n",out1[i]);
-         }
-         for(i=0; i<n; i++){
-             post("out2[i] : %lf\n",out2[i]);
-         }
-
-         
-            x->flag = 1;
-         
-        }
-    */
-
-    
-    for(i = x->filter_length; i<x->convsize; i++){
-            x->buffer_right[i] = 0.0;
-            x->buffer_left[i] = 0.0;
-    }
-    
-    
-    //in_left_finalが1を超えていた
-    
-    for(i = 0;i<x->convsize;i++){
-        x->buffer_right[i] = x->buffer_right[i] + x->in_right_final[i][0];
-        x->buffer_left[i] = x->buffer_left[i] + (x->in_left_final[i][0] * mux);
-    }
-
-    
-     
     for(i=0;i<n;i++){
-        out1[i] = x->buffer_right[i];
-        out2[i] = x->buffer_left[i];
+        out1[i] = x->in_left_final[i][0];
+        out2[i] = x->in_right_final[i][0];
+    }
+     */
+
+    
+    
+    
+    for(i=0;i<x->convsize;i++){
+        x->buffer_left[i] = x->buffer_left[i] + x->in_left_final[i][0];
+        x->buffer_right[i] = x->buffer_right[i] + x->in_right_final[i][0];
+    }
+
+
+    for(i=0;i<n;i++){
+        out1[i] = x->buffer_left[i];
+        out2[i] = x->buffer_right[i];
     }
     
-
-         
+    
+    
     int j = 0;
     for(i=n; i<x->convsize; i++){
-        x->buffer_right[j] = x->in_right_final[i][0];
         x->buffer_left[j] = x->in_left_final[i][0];
+        x->buffer_right[j] = x->in_right_final[i][0];
         j++;
     }
     
-    
-         
-    /*
-    for(i=0; i<n; i++){
-        post("out1[i] : %lf\n",out1[i]);
-    }
-    for(i=0; i<n; i++){
-        post("out2[i] : %lf\n",out2[i]);
-    }
-    */
-         
-    
-   //  post("%f\n",x->flag);
+   
     
     return (w+6);
     
@@ -406,7 +330,7 @@ void mysofa_tilde_dsp(t_mysofa_tilde *x, t_signal **sp) {
     
     int filter_length, err;
     int i=0;
-    int size[8] = {128, 256, 512, 1024, 2048, 4096, 8192};
+    int size[8] = {128, 256, 512, 1024, 2048, 4096, 8192,16384};
     
     // x->sofa = mysofa_open("/Users/fujisawasakuwataru/Downloads/Pd/mysofa/RIEC_hrtf_all/RIEC_hrir_subject_001.sofa", 48000, &filter_length, &err);
     
@@ -421,7 +345,7 @@ void mysofa_tilde_dsp(t_mysofa_tilde *x, t_signal **sp) {
             post("blocksize is too large");
             break;
         }
-        if(x->fftsize<=size[i]){
+        if(x->convsize <= size[i]){
             x->fftsize = size[i];
             break;
         }
@@ -429,12 +353,18 @@ void mysofa_tilde_dsp(t_mysofa_tilde *x, t_signal **sp) {
     }
     
     
+    post("filter_length : %f",x->filter_length);
+    post("convsize : %f",x->convsize);
+    post("fftsize : %f",x->fftsize);
+
     
+
+
     
     if(!x->sofa) {
         post("Error opening the SOFA file");
     }
-    post("%d",err);
+    post("err : %d",err);
     
     
     x->in_signal_fftwf = (fftwf_complex *)fftwf_malloc(sizeof(fftwf_complex) * x->fftsize);
@@ -447,7 +377,7 @@ void mysofa_tilde_dsp(t_mysofa_tilde *x, t_signal **sp) {
     
     x->in_right_ir_fftwf = (fftwf_complex *)fftwf_malloc(sizeof(fftwf_complex) * x->fftsize);
     x->out_right_ir_fftwf = (fftwf_complex *)fftwf_malloc(sizeof(fftwf_complex) * x->fftsize);
-    x->plan3 = fftwf_plan_dft_1d(x->fftsize, x->in_left_ir_fftwf, x->out_left_ir_fftwf, FFTW_FORWARD, FFTW_ESTIMATE);
+    x->plan3 = fftwf_plan_dft_1d(x->fftsize, x->in_right_ir_fftwf, x->out_right_ir_fftwf, FFTW_FORWARD, FFTW_ESTIMATE);
     
     
     x->in_left_final = (fftwf_complex *)fftwf_malloc(sizeof(fftwf_complex) * x->fftsize);
