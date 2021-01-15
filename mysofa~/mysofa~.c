@@ -50,7 +50,6 @@ typedef struct _mysofa_tilde {
     t_inlet *x_in2;
     t_inlet *x_in3;
     t_inlet *x_in4;
-    t_inlet *x_in5;
     t_outlet *x_out1;
     t_outlet *x_out2;
     
@@ -74,59 +73,8 @@ typedef struct _mysofa_tilde {
  //scaledBlocksize = blocksize * blockScale;
 // blocksizeDelta = MAX_BLOCKSIZE -1 - scaledBlocksize
 
-// t_symbol *filenameArg
 
 
-/*
- // This function is copied from https://github.com/sofacoustics/SOFAlizer-for-pd/blob/master/SOFAlizer~/SOFAlizer~.c
- static void mysofa_tilde_open (t_mysofa_tilde *x, t_symbol *filenameArg) {
- strcpy(x->filename, filenameArg->s_name);//->s_name);
- if (x->filename[0] == '\0') {
- error("No SOFA file specified");
- return;
- } else {
- post("SOFA file %s will be opened..", x->filename);
- }
- int filter_length, err;
- x->sofa = mysofa_open(x->filename, 48000, &filter_length, &err); // change this
- if(x->sofa == NULL) {
- error("SOFA file %s couldn't be opened.", x->filename);
- return;
- }
- x->M = x->sofa->hrtf->M;    // number of filters stored in sofa file
- x->N = x->sofa->hrtf->N;    // numer of sample points per stored filter
- x->R = x->sofa->hrtf->R;    //number of receivers
- 
- post("Metadata: %s %u HRTFs, %u samples @ %u Hz. %s, %s, %s.\n",
- x->filename,(unsigned int)x->M, (unsigned int)x->N,
- (unsigned int)(x->sofa->hrtf->DataSamplingRate.values[0]),
- mysofa_getAttribute(x->sofa->hrtf->attributes, "DatabaseName"),
- mysofa_getAttribute(x->sofa->hrtf->attributes, "Title"),
- mysofa_getAttribute(x->sofa->hrtf->attributes, "ListenerShortName"));
- 
- // Calculate distance of first measurement
- int i;
- for (i = 0; i < 3; i++) {    // read in first three coordinates
- x->values[i] = x->sofa->hrtf->SourcePosition.values[i];
- }
- x->distance = sqrtf(powf(x->values[0], 2.f) + powf(x->values[1], 2.f) + powf(x->values[2], 2.f)); // calculate distance
- post("Distance is %f m. \n", x->distance);
- 
- // Check for IR delays
- float delay = 0;
- int warn = 0;
- for (i = 0; i < x->R; i++) {
- delay = x->sofa->hrtf->DataDelay.values[i];
- if (delay != 0.0) {
- warn = 1;
- }
- }
- if (warn == 1) {
- error(" Warning: This SOFA file will be incorrectly processed besause of non zero IR delays!"); // To change so we can use th delays too
- }
- }
- 
- */
 
 
 
@@ -182,8 +130,8 @@ t_int *mysofa_tilde_perform(t_int *w) {
      x->in_signal_fftwf[i][1] = 0.0;
      }
     
-    //1が左
-    //2が右
+    //out1 is left
+    //out2 is right
     
     
      
@@ -256,10 +204,6 @@ t_int *mysofa_tilde_perform(t_int *w) {
     
     
     
-    
-    
-  
-    
      fftwf_execute(x->plan4);
      fftwf_execute(x->plan5);
     
@@ -286,7 +230,6 @@ t_int *mysofa_tilde_perform(t_int *w) {
     }
      */
 
-    
     
     
     for(i=0;i<x->convsize;i++){
@@ -332,7 +275,6 @@ void mysofa_tilde_dsp(t_mysofa_tilde *x, t_signal **sp) {
     int i=0;
     int size[8] = {128, 256, 512, 1024, 2048, 4096, 8192,16384};
     
-    // x->sofa = mysofa_open("/Users/fujisawasakuwataru/Downloads/Pd/mysofa/RIEC_hrtf_all/RIEC_hrir_subject_001.sofa", 48000, &filter_length, &err);
     
     x->sofa = mysofa_open(x->filenameArg->s_name, 48000, &filter_length, &err);
     //mysofa_tilde_open(x, x->filenameArg);
@@ -356,8 +298,6 @@ void mysofa_tilde_dsp(t_mysofa_tilde *x, t_signal **sp) {
     post("filter_length : %f",x->filter_length);
     post("convsize : %f",x->convsize);
     post("fftsize : %f",x->fftsize);
-
-    
 
 
     
@@ -404,6 +344,10 @@ void mysofa_tilde_dsp(t_mysofa_tilde *x, t_signal **sp) {
     
 }
 
+void mysofa_tilde_symbol(t_mysofa_tilde *x, t_symbol *s){
+    x->filenameArg = s;
+}
+
 
 
 
@@ -413,7 +357,6 @@ void mysofa_tilde_free(t_mysofa_tilde *x) {
     inlet_free(x->x_in2);
     inlet_free(x->x_in3);
     inlet_free(x->x_in4);
-    inlet_free(x->x_in5);
     outlet_free(x->x_out1);
     outlet_free(x->x_out2);
     
@@ -443,10 +386,9 @@ void mysofa_tilde_free(t_mysofa_tilde *x) {
 void *mysofa_tilde_new(void) {
     t_mysofa_tilde *x = (t_mysofa_tilde *)pd_new(mysofa_tilde_class);
     //  This is called every time an object is created.
-    x->x_in2 = symbolinlet_new(&x->x_obj, &x->filenameArg);
-    x->x_in3 = floatinlet_new(&x->x_obj, &x->azimuth);
-    x->x_in4 = floatinlet_new(&x->x_obj, &x->elevation);
-    x->x_in5 = floatinlet_new(&x->x_obj, &x->distance);
+    x->x_in2 = floatinlet_new(&x->x_obj, &x->azimuth);
+    x->x_in3 = floatinlet_new(&x->x_obj, &x->elevation);
+    x->x_in4 = floatinlet_new(&x->x_obj, &x->distance);
     
     
     x->x_out1 = outlet_new(&x->x_obj, &s_signal);
@@ -473,16 +415,11 @@ void mysofa_tilde_setup(void) {
     class_addmethod(mysofa_tilde_class,
                     (t_method)mysofa_tilde_dsp,
                     gensym("dsp"),A_CANT,0);
+    
+    class_addsymbol(mysofa_tilde_class, mysofa_tilde_symbol);
+    
     CLASS_MAINSIGNALIN(mysofa_tilde_class, t_mysofa_tilde, f);
     
-    // class_addmethod(mysofa_tilde_class, (t_method)mysofa_tilde_open, gensym("open"), A_DEFSYMBOL, 0); /* method to open new sofa file */
 }
 
-//Name object "mysofa~"
-//Instructor。Means that it is initialized every time
-//Destructor。 we need destructor because we created an additional inlet.
-//Allocate static memory.
-//Graphic settings for objects. Make it the default.
-//Use A_GIMME if you need more than 6 arguments for the symbolic object. 0 means End.
-//By attaching a dsp selector, it becomes a signal class, and by having A_CANT, invalid dsp cannot be sent.
-//In CLASS_MAINSIGNALIN, the inlet that exists from the beginning becomes the signal inlet.
+

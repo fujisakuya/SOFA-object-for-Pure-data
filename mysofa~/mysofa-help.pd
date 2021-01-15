@@ -1,55 +1,42 @@
-#N canvas 20 50 736 538 10;
+#N canvas 20 50 1264 585 10;
 #X obj 9 9 cnv 15 552 40 empty \$0-pddp.cnv.header mysofa~ 3 12 0 18
 -204280 -1 0;
 #X obj 235 194 vsl 15 100 0 359 0 0 empty empty Azimuth 0 -9 0 10 -262130
--1 -1 5200 1;
+-1 -1 8800 1;
 #X obj 290 193 vsl 15 100 -40 90 0 0 empty empty Elevation 0 -9 0 10
--204786 -1 -1 1100 1;
+-204786 -1 -1 9700 1;
 #X obj 348 192 vsl 15 100 20 160 0 0 empty empty Distance 0 -9 0 10
--204800 -1 -1 1700 1;
+-204800 -1 -1 0 1;
 #X floatatom 235 304 5 0 0 1 deg - -;
 #X floatatom 290 304 5 0 0 1 deg - -;
 #X floatatom 348 303 5 0 0 1 cm - -;
 #X obj 657 29 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
 -228856 -1 0;
-#X obj 659 161 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12
+#X obj 657 138 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12
 0 13 -228856 -1 0;
-#X obj 659 210 cnv 3 550 3 empty \$0-pddp.cnv.argument arguments 8
-12 0 13 -228856 -1 0;
-#X obj 659 254 cnv 3 550 3 empty \$0-pddp.cnv.more_info more_info 8
+#X obj 656 197 cnv 3 550 3 empty \$0-pddp.cnv.argument arguments 8
 12 0 13 -228856 -1 0;
 #X obj 735 38 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
 -162280 0;
-#X obj 737 170 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
+#X obj 735 147 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
 -162280 0;
-#X obj 735 81 cnv 17 3 17 empty \$0-pddp.cnv.let.1 2 5 9 0 16 -228856
+#X obj 735 64 cnv 17 3 17 empty \$0-pddp.cnv.let.1 1 5 9 0 16 -228856
 -162280 0;
-#X text 755 80 float;
-#X text 757 169 signal;
-#X text 755 37 signal;
-#X obj 735 59 cnv 17 3 17 empty \$0-pddp.cnv.let.0 1 5 9 0 16 -228856
+#X text 755 63 float;
+#X text 755 146 signal;
+#X obj 737 86 cnv 17 3 17 empty \$0-pddp.cnv.let.1 2 5 9 0 16 -228856
 -162280 0;
-#X obj 735 102 cnv 17 3 17 empty \$0-pddp.cnv.let.1 3 5 9 0 16 -228856
+#X obj 736 167 cnv 17 3 17 empty \$0-pddp.cnv.let.0 1 5 9 0 16 -228856
 -162280 0;
-#X obj 738 190 cnv 17 3 17 empty \$0-pddp.cnv.let.0 1 5 9 0 16 -228856
--162280 0;
-#X text 18 109 NOTE: the sqlite database HRIR@XXXX.db \, where XXXX
-is the sampling rate in Hz must be in the same directory as the patch
-using this object;
-#X text 758 189 signal;
+#X text 756 166 signal;
 #X obj 177 452 dac~;
-#X text 826 169 - the convolved signal for the left loudspeaker;
-#X text 827 188 - the convolved signal for the right loudspeaker;
-#X text 826 211 comment;
-#X text 743 214 comment;
-#X text 750 260 http://onkyo.u-aizu.ac.jp/index.php/software/trans/
-;
-#X text 750 274 comment;
-#X text 824 80 - a float to the 3rd inlet sets the azimuth (0..360
-degrees);
-#X obj 169 263 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
-#X obj 169 300 openpanel;
+#X text 824 146 - the convolved signal for the left loudspeaker;
+#X text 825 165 - the convolved signal for the right loudspeaker;
+#X text 823 205 comment;
+#X text 740 201 comment;
+#X obj 36 266 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 36 303 openpanel;
 #X obj 57 207 noise~;
 #X obj 400 263 openpanel;
 #X obj 400 237 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
@@ -65,59 +52,43 @@ degrees);
 (first inlets) the HRIR measurements from the SOFAfile (second inlet)
 \, depending on the azimuth and distance of the loudspeakers (last
 three inlets).;
-#X text 755 58 symbol;
-#X text 825 38 - the signal;
-#X text 825 58 - path to SOFAfile's;
-#X obj 736 124 cnv 17 3 17 empty \$0-pddp.cnv.let.1 4 5 9 0 16 -228856
+#X obj 738 108 cnv 17 3 17 empty \$0-pddp.cnv.let.1 3 5 9 0 16 -228856
 -162280 0;
-#X text 755 101 float;
-#X text 756 124 float;
-#X text 826 124 - a float to the 5th inlet sets the distance (20..160
-cm);
-#X text 824 102 - a float to the 4rd inlet sets the elevation (-40..90
-degrees), f 64;
+#X text 757 85 float;
+#X text 758 108 float;
 #X obj 36 482 print~;
 #X obj 34 450 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
 #X obj 80 483 print~;
 #X obj 78 456 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
-#X obj 19 304 tabplay~ soundfile;
-#X obj 17 270 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
-#N canvas 20 50 736 538 mysofa 1;
-#X obj 139 140 inlet;
-#X obj 189 141 inlet;
-#X obj 69 141 inlet~;
-#X obj 238 142 inlet;
-#X obj 138 215 mysofa~;
-#X obj 300 144 inlet;
-#X obj 120 278 outlet~;
-#X obj 198 279 outlet~;
-#X obj 366 111 block~ 4096;
-#X connect 0 0 4 1;
-#X connect 1 0 4 2;
-#X connect 2 0 4 0;
-#X connect 3 0 4 3;
-#X connect 4 0 6 0;
-#X connect 4 1 7 0;
-#X connect 5 0 4 4;
-#X restore 168 380 pd mysofa;
+#X obj 110 302 tabplay~ soundfile;
+#X obj 109 266 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 169 384 mysofa~;
+#X text 755 37 symbol andsignal;
+#X text 871 38 - path to SOFAfile's and the signal;
+#X text 824 63 - a float to the 2rd inlet sets the azimuth (0..360
+degrees);
+#X text 826 86 - a float to the 3rd inlet sets the elevation (-40..90
+degrees), f 64;
+#X text 828 108 - a float to the 4th inlet sets the distance (20..160
+cm);
 #X connect 1 0 4 0;
 #X connect 2 0 5 0;
 #X connect 3 0 6 0;
-#X connect 4 0 54 2;
-#X connect 5 0 54 3;
-#X connect 6 0 54 4;
-#X connect 30 0 31 0;
-#X connect 31 0 54 1;
-#X connect 33 0 35 0;
-#X connect 34 0 33 0;
-#X connect 35 0 36 0;
-#X connect 49 0 48 0;
-#X connect 51 0 50 0;
-#X connect 52 0 54 0;
-#X connect 52 1 53 0;
-#X connect 53 0 52 0;
-#X connect 54 0 22 0;
-#X connect 54 1 22 1;
+#X connect 4 0 42 1;
+#X connect 5 0 42 2;
+#X connect 6 0 42 3;
+#X connect 23 0 24 0;
+#X connect 24 0 42 0;
+#X connect 26 0 28 0;
+#X connect 27 0 26 0;
+#X connect 28 0 29 0;
+#X connect 37 0 36 0;
+#X connect 39 0 38 0;
+#X connect 40 0 42 0;
+#X connect 40 1 41 0;
+#X connect 41 0 40 0;
+#X connect 42 0 18 0;
+#X connect 42 1 18 1;
