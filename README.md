@@ -49,11 +49,15 @@ How to use pdsofa~help.pd
 
 > $ make
 
-Press the bang connected to the second inlet from the left of SOFA-object-for-Pure-data~ and select the sofafile you want.
-Next, select the .wav file you want to put in the soundfile array.
-Turn on DSP.
-If you change the Azimuth, elevation, and distance values, the sound will be output accordingly.
+First, press the bung connected to the [openpanel] and select the sofafile you want to include.
 
+Next, select the .wav file you want to put in the sound file array.
+
+Turn on the DSP.
+
+Press the bung connected to [tabplay~].
+
+Change the azimuth, elevation, and distance values, and the sound will be output accordingly.
 
 
 # Author
