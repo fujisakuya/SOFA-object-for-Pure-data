@@ -379,15 +379,7 @@ void mysofa_tilde_free(t_mysofa_tilde *x) {
     mysofa_close(x->sofa);
 }
 
-float *in_signal_fftwf;
-float *in_left_ir_fftwf, *in_right_ir_fftwf;
-float *out_left_final, *out_right_final;
-float *out_left_final_p, *out_right_final_p;
 
-
-fftwf_complex *out_signal_fftwf;
-fftwf_complex *out_left_ir_fftwf,*out_right_ir_fftwf;
-fftwf_complex *in_left_final, *in_right_final;
 
 
 
