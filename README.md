@@ -62,5 +62,5 @@ Change the azimuth, elevation, and distance values, and the sound will be output
 
 # Author
 * Author Sakuya Fujisawa
-* E-mail s1250017@u-aizu.ac.jp
+* E-mail m5251103@u-aizu.ac.jp
 
