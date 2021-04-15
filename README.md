@@ -42,6 +42,7 @@ https://github.com/hoene/libmysofa
 Follow the Compile here.
 
 If you do not have Cunit installed, please install it.
+https://sourceforge.net/projects/cunit/files/
 
 Also, if you do not have Node.js installed, please install it.
 
@@ -67,6 +68,13 @@ Press the bang connected to [tabplay~].
 
 Change the azimuth, elevation, and distance values, and the sound will be output accordingly.
 
+There is a video for reference.
+
+https://youtu.be/DrBP1Iz9Ots 
+(English)
+
+https://youtu.be/eYMlJGgj1rw 
+(Japan)
 
 # Author
 * Author Sakuya Fujisawa
