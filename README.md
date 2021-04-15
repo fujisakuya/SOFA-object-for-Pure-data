@@ -31,14 +31,18 @@ Install the latest fftw here
 > $ sudo make install
 
 Installation is complete.
+
 Make sure that libfftw3.a, libfftw3.la, libfftw3f.a, libfftw3f.la, and libmysofa.a are in ~/usr/local/lib/.
+
 If you don't have them, move them to ~/usr/local/lib.
 
 
 libmysofa
 https://github.com/hoene/libmysofa
 Follow the Compile here.
+
 If you do not have Cunit installed, please install it.
+
 Also, if you do not have Node.js installed, please install it.
 
 
