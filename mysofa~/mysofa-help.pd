@@ -1,87 +1,134 @@
-#N canvas 20 50 1061 584 12;
-#X obj 42 31 cnv 15 552 40 empty \$0-pddp.cnv.header mysofa~ 3 12 0
-18 -204280 -1 0;
-#X obj 259 175 vsl 15 100 0 359 0 0 empty empty Azimuth 0 -9 0 10 -262130
--1 -1 7000 1;
-#X obj 324 172 vsl 15 100 -40 90 0 0 empty empty Elevation 0 -9 0 10
--204786 -1 -1 6800 1;
-#X obj 383 168 vsl 15 100 20 160 0 0 empty empty Distance 0 -9 0 10
--204800 -1 -1 3100 1;
-#X floatatom 259 285 5 0 0 1 deg - -;
-#X floatatom 323 287 5 0 0 1 deg - -;
-#X floatatom 384 288 5 0 0 1 cm - -;
-#X obj 690 51 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
--228856 -1 0;
-#X obj 690 160 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12
-0 13 -228856 -1 0;
-#X obj 686 257 cnv 3 550 3 empty \$0-pddp.cnv.argument arguments 8
-12 0 13 -228856 -1 0;
-#X obj 768 60 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
--162280 0;
-#X obj 768 169 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
--162280 0;
-#X obj 768 86 cnv 17 3 17 empty \$0-pddp.cnv.let.1 1 5 9 0 16 -228856
--162280 0;
-#X text 788 85 float;
-#X text 788 168 signal;
-#X obj 770 108 cnv 17 3 17 empty \$0-pddp.cnv.let.1 2 5 9 0 16 -228856
--162280 0;
-#X obj 769 189 cnv 17 3 17 empty \$0-pddp.cnv.let.0 1 5 9 0 16 -228856
--162280 0;
-#X text 789 188 signal;
-#X obj 178 451 dac~;
-#X text 857 168 - the convolved signal for the left loudspeaker;
-#X text 858 187 - the convolved signal for the right loudspeaker;
-#X text 856 227 comment;
-#X text 773 223 comment;
-#X obj 38 251 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+#N canvas 257 -884 577 755 12;
+#X obj 7 7 cnv 15 552 40 empty \$0-pddp.cnv.header mysofa~ 3 12 0 18
+-204280 -1 0;
+#X obj 226 196 vsl 15 100 0 359 0 0 empty empty Azimuth 0 -9 0 10 -262130
+-1 -1 0 1;
+#X obj 290 195 vsl 15 100 -90 90 0 0 empty empty Elevation 0 -9 0 10
+-204786 -1 -1 0 1;
+#X obj 353 196 vsl 15 100 20 160 0 0 empty empty Distance 0 -9 0 10
+-204800 -1 -1 0 1;
+#X floatatom 226 308 5 0 0 1 deg - -;
+#X floatatom 290 308 5 0 0 1 deg - -;
+#X floatatom 353 309 5 0 0 1 cm - -;
+#X obj 145 278 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 146 299 openpanel;
+#X obj 21 182 openpanel;
+#X obj 21 161 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
-#X obj 38 288 openpanel;
-#X obj 452 240 openpanel;
-#X obj 452 214 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
-#X msg 452 263 read -resize \$1 soundfile;
-#X obj 452 292 soundfiler;
+#X msg 21 205 read -resize \$1 soundfile;
+#X obj 21 230 soundfiler;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X array soundfile 44100 float 2;
-#X coords 0 1 44100 -1 200 140 1 0 0;
-#X restore 449 330 graph;
-#X text 54 54 frequency and SOFAfile convolition filter;
-#X text 52 76 [mysofa~] outputs the convolution of a binaural signal
-(first inlets) the HRIR measurements from the SOFAfile (second inlet)
-\, depending on the azimuth and distance of the loudspeakers (last
-three inlets).;
-#X obj 771 130 cnv 17 3 17 empty \$0-pddp.cnv.let.1 3 5 9 0 16 -228856
--162280 0;
-#X text 790 107 float;
-#X text 791 130 float;
-#X obj 112 287 tabplay~ soundfile;
-#X obj 111 251 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+#X array soundfile 340992 float 2;
+#X coords 0 1 340992 -1 200 70 1 0 0;
+#X restore 339 358 graph;
+#X obj 14 352 tabplay~ soundfile;
+#X obj 14 328 bng 15 250 50 0 empty \$0-EOF empty 17 7 0 10 -262144
 -1 -1;
-#X obj 169 376 mysofa~;
-#X text 788 59 symbol andsignal;
-#X text 904 60 - path to SOFAfile's and the signal;
-#X text 857 85 - a float to the 2rd inlet sets the azimuth (0..360
-degrees);
-#X text 859 108 - a float to the 3rd inlet sets the elevation (-40..90
-degrees), f 64;
-#X text 861 130 - a float to the 4th inlet sets the distance (20..160
-cm);
-#X msg 171 247 stop;
+#X obj 147 399 mysofa~;
+#X msg 36 326 stop;
+#X obj 193 442 *~;
+#X obj 147 443 *~;
+#X floatatom 212 416 5 0 0 0 - - -;
+#X text 19 30 Frequency-based convolution filter for SOFA HRIRs;
+#X obj 5 516 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
+-228856 -1 0;
+#X obj 5 625 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0
+13 -228856 -1 0;
+#X obj 4 682 cnv 3 550 3 empty \$0-pddp.cnv.argument more_info 8 12
+0 13 -228856 -1 0;
+#X obj 83 525 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
+-162280 0;
+#X obj 83 634 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
+-162280 0;
+#X obj 83 547 cnv 17 3 17 empty \$0-pddp.cnv.let.1 1 5 9 0 16 -228856
+-162280 0;
+#X text 103 546 float;
+#X text 103 633 signal;
+#X obj 83 569 cnv 17 3 17 empty \$0-pddp.cnv.let.1 2 5 9 0 16 -228856
+-162280 0;
+#X obj 84 654 cnv 17 3 17 empty \$0-pddp.cnv.let.0 1 5 9 0 16 -228856
+-162280 0;
+#X text 104 653 signal;
+#X obj 83 591 cnv 17 3 17 empty \$0-pddp.cnv.let.1 3 5 9 0 16 -228856
+-162280 0;
+#X text 103 568 float;
+#X text 103 591 float;
+#X text 103 524 symbol and signal;
+#X text 225 525 - path to SOFA file and signal;
+#X text 172 633 - convolved signal for the left channel;
+#X text 141 546 - azimuth (0..360 deg.);
+#X text 140 569 - elevation (-90..90 deg.), f 64;
+#X text 141 591 - distance (20..160 cm);
+#X text 173 652 - convolved signal for the right channel;
+#X text 90 685 https://onkyo.u-aizu..ac.jp/~julian;
+#X obj -1 709 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
+14 -228856 -66577 0;
+#N canvas 603 439 494 344 META 0;
+#X text 12 85 INLET_1 float;
+#X text 12 136 OUTLET_0 signal;
+#X text 12 104 INLET_2 float;
+#X text 12 120 INLET_3 float;
+#X text 12 5 KEYWORDS SOFA hrir;
+#X text 12 25 LICENSE Standard Improved BSD License;
+#X text 12 45 DESCRIPTION Frequency-based convolution for SOFA HRIRs
+;
+#X text 12 65 INLET_0 float and signal;
+#X text 12 149 OUTLET_1 signal;
+#X text 12 164 LIBRARY UoA;
+#X text 12 181 AUTHOR Sakuya Fujisawa & Julian Villegas;
+#X text 12 200 WEBSITE https://onkyo.u-aizu.ac.jp;
+#X text 11 221 RELEASE_DATE 2021;
+#X restore 499 711 pd META;
+#N canvas 1103 742 428 109 Related_objects 0;
+#X obj 1 1 cnv 15 425 20 empty \$0-pddp.cnv.subheading empty 3 12 0
+14 -204280 -1 0;
+#X text 8 2 [hrir~] Related Objects;
+#X obj 17 35 hrir~;
+#X obj 16 65 earplug~;
+#X restore 101 711 pd Related_objects;
+#X obj 3 711 pddp/pddplink all_about_help_patches.pd -text Usage Guide
+;
+#X obj 129 376 bng 15 250 50 0 \$0-EOF empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 147 480 dac~, f 7;
+#X obj 249 390 hsl 64 15 0 1 0 0 empty empty level -2 -8 0 10 -262144
+-1 -1 2000 1;
+#X text 45 158 1) Select audio file;
+#X text 3 277 2) Select SOFA file;
+#X msg 322 450 \; pd dsp 1;
+#X obj 255 418 moses 0;
+#X msg 250 450 \; pd dsp 0;
+#X text 4 305 3) play;
+#X text 223 158 4) Adjust coordinates;
+#X text 17 52 [mysofa~] outputs the convolution of a monaural signal
+(first inlet) with the HRIR measurements from a SOFA file (first inlet
+\, too) \, depending on the azimuth and distance of the loudspeakers
+(last three inlets). Distance is not yet implemented in the SOFA standard.
+NOTE: Make sure that the SOFA file and Pd have the same sampling rate
+, f 76;
 #X connect 1 0 4 0;
 #X connect 2 0 5 0;
 #X connect 3 0 6 0;
-#X connect 4 0 37 1;
-#X connect 5 0 37 2;
-#X connect 6 0 37 3;
-#X connect 23 0 24 0;
-#X connect 24 0 37 0;
-#X connect 25 0 27 0;
-#X connect 26 0 25 0;
-#X connect 27 0 28 0;
-#X connect 35 0 37 0;
-#X connect 35 1 36 0;
-#X connect 36 0 35 0;
-#X connect 37 0 18 0;
-#X connect 37 1 18 1;
-#X connect 43 0 35 0;
+#X connect 4 0 16 1;
+#X connect 5 0 16 2;
+#X connect 6 0 16 3;
+#X connect 7 0 8 0;
+#X connect 8 0 16 0;
+#X connect 9 0 11 0;
+#X connect 10 0 9 0;
+#X connect 11 0 12 0;
+#X connect 14 0 16 0;
+#X connect 14 1 48 0;
+#X connect 15 0 14 0;
+#X connect 16 0 19 0;
+#X connect 16 1 18 0;
+#X connect 17 0 14 0;
+#X connect 18 0 49 1;
+#X connect 19 0 49 0;
+#X connect 20 0 19 1;
+#X connect 20 0 18 1;
+#X connect 50 0 20 0;
+#X connect 50 0 54 0;
+#X connect 54 0 55 0;
+#X connect 54 1 53 0;
